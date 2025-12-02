@@ -83,39 +83,30 @@ def load_character(character_name, save_directory="data/save_games"):
     if not os.path.exists(filename):
         raise CharacterNotFoundError(f"No save file for {character_name}")
 
+    character = {}
+
     try:
         with open(filename, "r") as f:
-            data = f.readlines()
-    except Exception:
-        raise SaveFileCorruptedError("Error reading save file.")
+            for line in f:
+                if ":" not in line:
+                    continue
+                key, value = line.strip().(":", 1)
 
-    try:
-        char = {}
-        for line in data:
-            key, value = line.strip().split(": ", 1)
-            char[key] = value
+                key = key.strip()
+                value = value.strip()
 
-        # Convert numeric fields
-        char_data = {
-            "name": char["NAME"],
-            "class": char["CLASS"],
-            "level": int(char["LEVEL"]),
-            "health": int(char["HEALTH"]),
-            "max_health": int(char["MAX_HEALTH"]),
-            "strength": int(char["STRENGTH"]),
-            "magic": int(char["MAGIC"]),
-            "experience": int(char["EXPERIENCE"]),
-            "gold": int(char["GOLD"]),
-            "inventory": char["INVENTORY"].split(",") if char["INVENTORY"] else [],
-            "active_quests": char["ACTIVE_QUESTS"].split(",") if char["ACTIVE_QUESTS"] else [],
-            "completed_quests": char["COMPLETED_QUESTS"].split(",") if char["COMPLETED_QUESTS"] else []
-        }
+                if "," in value:
+                    value = value.split(",")
 
-        validate_character_data(char_data)
-        return char_data
+                elif value.isdigit():
+                    value = int(value)
+
+            character[key] = value
 
     except Exception:
-        raise InvalidSaveDataError("Save file format is invalid.")
+        raise InvalidSaveDataError(f"Error with save data format for {character}.")
+
+    return character
 
 
 def list_saved_characters(save_directory="data/save_games"):
