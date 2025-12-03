@@ -251,4 +251,5 @@ def validate_character_data(character):
         "inventory": list,
         "active_quests": list,
         "completed_quests": list
+    }
 
