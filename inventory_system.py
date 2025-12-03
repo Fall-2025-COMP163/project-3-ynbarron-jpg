@@ -84,7 +84,6 @@ def use_item(character, item_id, item_data):
     apply_stat_effect(character, stat, value)
     remove_item_from_inventory(character, item_id)
 
-    character['inventory'].remove(item_id)
 
     return f"{character['name']} used {item_id} and gained {stat} +{value}."
 
@@ -109,7 +108,7 @@ def equip_weapon(character, item_id, item_data):
     character['inventory'].remove(item_id)
     character['equipped_weapon'] = item_id
 
-    return f"Equipped weapon: {item_data['name']} (+{value} {stat})"
+    return f"{character['name']} equipped weapon: {item_id} (+{value} {stat})"
 
 
 def equip_armor(character, item_id, item_data):
