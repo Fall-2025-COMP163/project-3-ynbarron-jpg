@@ -9,8 +9,7 @@ AI Usage: [Document any AI assistance used]
 This module handles character creation, loading, and saving.
 """
 
-        "completed_quests": []
-    }
+           
 import os
 from custom_exceptions import (
     InvalidCharacterClassError,
